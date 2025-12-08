@@ -11,7 +11,7 @@ public class HealthPresenter : MonoBehaviour, IDamagable
         _model = new HealthModel(_initialHealth);
         _model.OnHealthChanged += UpdateView;
         _model.OnDeath += HandleDeath;
-        UpdateView(1);
+        UpdateView(_model.CurrentHealth);
     }
 
     private void HandleDeath()

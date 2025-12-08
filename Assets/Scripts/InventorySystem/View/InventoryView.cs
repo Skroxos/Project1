@@ -7,11 +7,11 @@ public class InventoryView : MonoBehaviour
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI quantityText;
     
-    public void SetData(ItemSO item, int quantity)
+    public void SetData(Sprite item, int quantity)
     {
         if (item != null)
         {
-            itemIcon.sprite = item.itemIcon;
+            itemIcon.sprite = item;
             itemIcon.enabled = true;
             quantityText.text = quantity > 1 ? quantity.ToString() : "";
         }
@@ -21,7 +21,7 @@ public class InventoryView : MonoBehaviour
         }
     }
     
-    private void ClearData()
+    public void ClearData()
     {
         itemIcon.sprite = null;
         itemIcon.enabled = false;

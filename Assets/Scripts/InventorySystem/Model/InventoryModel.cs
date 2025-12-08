@@ -6,7 +6,7 @@ public class InventoryModel
 {
     public int Capacity { get; private set; }
     private readonly List<ItemSlot> _slots;
-    public event Action<ItemSlot> ItemAdded;
+    public event Action<int> OnSlotChanged;
     
     public InventoryModel(int capacity)
     {
@@ -24,6 +24,8 @@ public class InventoryModel
         var temp = _slots[indexA];
         _slots[indexA] = _slots[indexB];
         _slots[indexB] = temp;
+        OnSlotChanged?.Invoke(indexA);
+        OnSlotChanged?.Invoke(indexB);
     }
     
     public int AddItem(ItemSO item, int quantity)
@@ -37,7 +39,7 @@ public class InventoryModel
                 int toAdd = Math.Min(spaceLeft, quantity);
                 slot.Quantity += toAdd;
                 quantity -= toAdd;
-                ItemAdded?.Invoke(slot);
+                OnSlotChanged?.Invoke(i);
                 if (quantity <= 0) return 0;
             }
         }
@@ -51,12 +53,13 @@ public class InventoryModel
                 slot.Item = item;
                 slot.Quantity = toAdd;
                 quantity -= toAdd;
-                ItemAdded?.Invoke(slot);
+                OnSlotChanged?.Invoke(i);
                 if (quantity <= 0) return 0;
             }
         }
         
-        return quantity;
+        return quantity; 
+        
     }
 
 }

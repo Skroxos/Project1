@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,9 @@ public class InventoryPresenter : MonoBehaviour
     [SerializeField] private int maxInventorySize = 20;
     private InventoryModel inventoryModel;
     private List<InventoryView> inventoryViews;
+    
+    [SerializeField] ItemSO testItem;
+    [SerializeField] ItemSO testItem2;
 
 
     private void Start()
@@ -33,6 +37,18 @@ public class InventoryPresenter : MonoBehaviour
         else
         {
             view.SetData(slotData.Item.itemIcon, slotData.Quantity);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            inventoryModel.AddItem(testItem, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inventoryModel.AddItem(testItem2, 5);
         }
     }
 }

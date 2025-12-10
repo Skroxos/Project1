@@ -4,22 +4,27 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
    [SerializeField] private GameObject inventoryUI;
+   [SerializeField] private Camera playerCamera;
 
    private void Start()
    {
-         inventoryUI.SetActive(false);
+       //  inventoryUI.SetActive(false);
    }
 
    private void Update()
    {
-       if (Input.GetKeyDown(KeyCode.I))
-       {
-           inventoryUI.SetActive(!inventoryUI.activeSelf);
-       }
+       // if (Input.GetKeyDown(KeyCode.I))
+       // {
+       //     inventoryUI.SetActive(inventoryUI.activeSelf);
+       // }
 
        if (Input.GetKeyDown(KeyCode.Space))
        {
            ShootRaycast();
+       }
+       if (Input.GetKeyDown(KeyCode.E))
+       {
+           TryToInteract();
        }
    }
 
@@ -32,6 +37,19 @@ public class InputHandler : MonoBehaviour
               if (damagable != null)
               {
                 damagable.TakeDamage(10);
+              }
+         }
+   }
+
+   private void TryToInteract()
+   {
+       Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+         if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f))
+         {
+              IInteractable interactable = hitInfo.collider.GetComponent<IInteractable>();
+              if (interactable != null)
+              {
+                interactable.Interact(this.gameObject);
               }
          }
    }

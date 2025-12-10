@@ -51,4 +51,10 @@ public class InventoryPresenter : MonoBehaviour
             inventoryModel.AddItem(testItem2, 5);
         }
     }
+    
+    public int AddItemToInventory(ItemSO item, int quantity)
+    {
+        int leftover = inventoryModel.AddItem(item, quantity);
+        return leftover;
+    }
 }

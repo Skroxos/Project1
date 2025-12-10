@@ -1517,7 +1517,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 539330254}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ac9ef0d8e4215a4f95e778cc6f6a78f, type: 3}
   m_Name: 
@@ -4820,6 +4820,8 @@ GameObject:
   - component: {fileID: 1938767933476111596}
   - component: {fileID: 868005050581743993}
   - component: {fileID: 4962127784367337722}
+  - component: {fileID: 6358873799306645998}
+  - component: {fileID: 6358873799306645997}
   m_Layer: 5
   m_Name: HotbarPanel
   m_TagString: Untagged
@@ -4827,6 +4829,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6358873799306645997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6358873799306645996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cad5f381f72efa42a0c75e76338e334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hotBarView: {fileID: 6358873799306645998}
+  hotBarSize: 5
+  inventoryPresenter: {fileID: 539330259}
+--- !u!114 &6358873799306645998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6358873799306645996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8d8ca40f9785429f6106c1772d92d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectorTransform: {fileID: 6535044406409766317}
+  hotbarSlots:
+  - {fileID: 258957385}
+  - {fileID: 490262183}
+  - {fileID: 1338235223}
+  - {fileID: 1839934819}
+  - {fileID: 1077805272}
 --- !u!224 &6535044406409766317
 RectTransform:
   m_ObjectHideFlags: 0

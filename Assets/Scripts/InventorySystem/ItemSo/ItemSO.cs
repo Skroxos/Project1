@@ -8,4 +8,9 @@ public class ItemSO : ScriptableObject
     public Sprite itemIcon;
     public int maxStackSize;
     public bool isStackable;
+    
+    public virtual void UseItem(GameObject user)
+    {
+        Debug.Log($"Using item: {itemName}");
+    }
 }

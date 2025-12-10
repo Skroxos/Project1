@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 
 public class HotbarPresenter : MonoBehaviour
 {
     [SerializeField] private HotbarView hotBarView;
     [SerializeField] private int hotBarSize = 5;
+    [SerializeField] private InventoryPresenter inventoryPresenter;
     private HotBarModel hotBarModel;
 
     private void Start()
@@ -21,6 +21,10 @@ public class HotbarPresenter : MonoBehaviour
     private void Update()
     {
         HandleInput();
+        if (Input.GetMouseButtonDown(0))
+        {
+            TryUseSelectedItem();
+        }
     }
 
     private void HandleInput()
@@ -44,5 +48,17 @@ public class HotbarPresenter : MonoBehaviour
         hotBarView.MoveSelector(obj);
     }
 
-   
+   private void TryUseSelectedItem()
+   {
+     int selectedIndex = hotBarModel.SelectedIndex;
+     var slot = inventoryPresenter.InventoryModel.GetSlot(selectedIndex);
+     if (!slot.IsEmpty)
+     {
+            slot.Item.UseItem(gameObject);
+     }
+     else
+     {
+         Debug.Log($"No item selected for {selectedIndex}");
+     }
+   }
 }

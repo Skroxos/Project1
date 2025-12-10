@@ -11,6 +11,8 @@ public class InventoryPresenter : MonoBehaviour
     
     [SerializeField] ItemSO testItem;
     [SerializeField] ItemSO testItem2;
+    
+    public InventoryModel InventoryModel => inventoryModel;
 
 
     private void Start()

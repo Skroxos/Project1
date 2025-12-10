@@ -62,4 +62,16 @@ public class InventoryModel
         
     }
 
+   public void RemoveItem(int index, int quantity)
+   {
+       var slot = _slots[index];
+       if (slot.IsEmpty) return;
+       
+       slot.Quantity -= quantity;
+       if (slot.Quantity <= 0)
+       {
+           slot.Clear();
+       }
+       OnSlotChanged?.Invoke(index);
+   }
 }

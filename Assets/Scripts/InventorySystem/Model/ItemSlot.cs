@@ -7,4 +7,10 @@ public class ItemSlot
     
     public bool IsEmpty => Item == null || Quantity <= 0;
     public bool IsFull => Item != null && Quantity >= Item.maxStackSize;
+    
+    public void Clear()
+    {
+        Item = null;
+        Quantity = 0;
+    }
 }

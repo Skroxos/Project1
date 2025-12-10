@@ -52,6 +52,14 @@ public class InventoryPresenter : MonoBehaviour
         {
             inventoryModel.AddItem(testItem2, 5);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            inventoryModel.SwapItems(0, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            inventoryModel.RemoveItem(3,2);
+        }
     }
     
     public int AddItemToInventory(ItemSO item, int quantity)

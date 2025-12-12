@@ -8,15 +8,15 @@ public class InputHandler : MonoBehaviour
 
    private void Start()
    {
-       //  inventoryUI.SetActive(false);
+         inventoryUI.SetActive(false);
    }
 
    private void Update()
    {
-       // if (Input.GetKeyDown(KeyCode.I))
-       // {
-       //     inventoryUI.SetActive(inventoryUI.activeSelf);
-       // }
+       if (Input.GetKeyDown(KeyCode.I))
+       {
+              inventoryUI.SetActive(!inventoryUI.activeSelf);
+       }
 
        if (Input.GetKeyDown(KeyCode.Space))
        {

@@ -31,11 +31,12 @@ public class ExternalStoragePresenter : MonoBehaviour
         }
         _currentStorageModel = storageModel;
         _currentStorageModel.OnSlotChanged += UpdateStorageSlotView;
+        _externalStorageUI.SetActive(true);
         for (int i = 0; i < _currentStorageModel.Capacity; i++)
         {
             UpdateStorageSlotView(i);
         }
-        _externalStorageUI.SetActive(true);
+        
     }
     
     public void DisconnectStorageModel()

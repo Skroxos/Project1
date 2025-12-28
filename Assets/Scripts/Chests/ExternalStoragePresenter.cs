@@ -17,8 +17,14 @@ public class ExternalStoragePresenter : MonoBehaviour
             InventoryView slotView = slot.GetComponentInChildren<InventoryView>();
             if (slotView != null)
             {
+                
                 _storageViews.Add(slotView);
             }
+        }
+        
+        for (int i = 0; i < _storageViews.Count; i++)
+        {
+            _storageViews[i].SlotIndex = i;
         }
        
     }

@@ -7,11 +7,8 @@ public class InventoryView : MonoBehaviour
 {
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI quantityText;
-
-    // private void Start()
-    // {
-    //     ClearData();
-    // }
+    
+    public int SlotIndex { get; set; }
 
     public void SetData(Sprite item, int quantity)
     {
@@ -36,4 +33,18 @@ public class InventoryView : MonoBehaviour
         itemIcon.enabled = false;
         quantityText.text = "";
     }
+    public Sprite GetItemIcon()
+    {
+        return itemIcon.sprite;
+    }
+    public int GetItemQuantity()
+    {
+        if (int.TryParse(quantityText.text, out int quantity))
+        {
+            return quantity;
+        }
+        return 1;
+    }
 }
+
+

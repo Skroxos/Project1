@@ -14,6 +14,7 @@ public class InventoryPresenter : MonoBehaviour
     
     public InventoryModel InventoryModel => inventoryModel;
 
+    
 
     private void Start()
     {
@@ -22,15 +23,16 @@ public class InventoryPresenter : MonoBehaviour
         for (int i = 0; i < slotGameObjects.Length; i++)
         {
             InventoryView slotView = slotGameObjects[i].GetComponent<InventoryView>();
+            slotView.SlotIndex = i;
             inventoryViews.Add(slotView);
         }
         inventoryModel.OnSlotChanged += UpdateSlotView;
     }
 
-    private void UpdateSlotView(int obj)
+    private void UpdateSlotView(int index)
     {
-        var slotData = inventoryModel.GetSlot(obj);
-        var view = inventoryViews[obj];
+        var slotData = inventoryModel.GetSlot(index);
+        var view = inventoryViews[index];
         
         if (slotData.IsEmpty)
         {

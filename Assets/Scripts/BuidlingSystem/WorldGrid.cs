@@ -40,4 +40,39 @@ public class WorldGrid
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         z = Mathf.FloorToInt((worldPosition - originPosition).z / cellSize);
     }
+
+    public Vector3 GetClosestEdgeWorldPosition(Vector3 worldPosition)
+    {
+        float xRaw = (worldPosition - originPosition).x / cellSize;
+        float zRaw = (worldPosition - originPosition).z / cellSize;
+        
+        int x = Mathf.FloorToInt(xRaw);
+        int z = Mathf.FloorToInt(zRaw);
+        
+        float xLocal = xRaw - x;
+        float zLocal = zRaw - z;
+        
+        Vector2[] edgeMidpoints = new Vector2[] {
+            new Vector2(0.5f, 0f), 
+            new Vector2(0.5f, 1f), 
+            new Vector2(0f, 0.5f), 
+            new Vector2(1f, 0.5f)  
+        };
+        
+        int closestEdgeIndex = 0;
+        float minDistance = float.MaxValue;
+        
+        for (int i = 0; i < edgeMidpoints.Length; i++)
+        {
+            float dist = Vector2.Distance(new Vector2(xLocal, zLocal), edgeMidpoints[i]);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closestEdgeIndex = i;
+            }
+        }
+        
+        Vector2 closest = edgeMidpoints[closestEdgeIndex];
+        return new Vector3(x + closest.x, 0, z + closest.y) * cellSize + originPosition;
+    }
 }

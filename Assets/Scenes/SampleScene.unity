@@ -4887,7 +4887,7 @@ GameObject:
   - component: {fileID: 1286318840}
   - component: {fileID: 1286318839}
   - component: {fileID: 1286318838}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6251,7 +6251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
   availableBuildPieces:
   - {fileID: 11400000, guid: dad41102006d7e944abd7d988fac0f3d, type: 2}
 --- !u!4 &1684478399

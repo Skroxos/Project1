@@ -49,6 +49,9 @@ public class WorldGrid
         int x = Mathf.FloorToInt(xRaw);
         int z = Mathf.FloorToInt(zRaw);
         
+        
+        int y = Mathf.RoundToInt((worldPosition - originPosition).y / cellSize);
+        
         float xLocal = xRaw - x;
         float zLocal = zRaw - z;
         
@@ -73,6 +76,6 @@ public class WorldGrid
         }
         
         Vector2 closest = edgeMidpoints[closestEdgeIndex];
-        return new Vector3(x + closest.x, 0, z + closest.y) * cellSize + originPosition;
+        return new Vector3(x + closest.x, y, z + closest.y) * cellSize + originPosition;
     }
 }

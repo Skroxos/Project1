@@ -14,9 +14,9 @@ public class Builder : MonoBehaviour
 
     private void Start()
     {
-        int width = 50;
-        int height = 50;
-        float cellSize = 5f;
+        int width = 1;
+        int height = 1;
+        float cellSize = 1f;
         Vector3 originPosition = new Vector3(width * cellSize / 2 * -1, 0, height * cellSize / 2 * -1);
         Cursor.lockState = CursorLockMode.Locked;
         worldGrid = new WorldGrid(width, height, cellSize, originPosition);
@@ -60,6 +60,10 @@ public class Builder : MonoBehaviour
             ghostObject = Instantiate(selectedBuildPiece.piecePrefab);
             ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
             Color ghostColor = new Color(1f, 1f, 1f, 0.5f);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ExitBuildMode();
         }
     }
     

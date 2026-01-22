@@ -12,12 +12,13 @@ public class Builder : MonoBehaviour
     private Quaternion rotation = Quaternion.identity;
     
     private BuildPieceSO selectedBuildPiece;
+    
+   [SerializeField] private int width = 1;
+   [SerializeField] private int height = 1;
+   [SerializeField] private float cellSize = 1f;
 
     private void Start()
     {
-        int width = 1;
-        int height = 1;
-        float cellSize = 1f;
         Vector3 originPosition = new Vector3(width * cellSize / 2 * -1, 0, height * cellSize / 2 * -1);
         Cursor.lockState = CursorLockMode.Locked;
         worldGrid = new WorldGrid(width, height, cellSize, originPosition);

@@ -5,6 +5,4 @@ public class BuildPieceSO : ScriptableObject
 {
     public string pieceName;
     public GameObject piecePrefab;
-    public int width;
-    public int height;
 }

@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: Floor
   m_EditorClassIdentifier: 
   pieceName: 
-  piecePrefab: {fileID: 7430478780501320944, guid: 60e364ea9be51b44cbbb21b9a45b9626, type: 3}
-  width: 0
-  height: 0
+  piecePrefab: {fileID: 7430478780501320944, guid: 0b83b484bcec4ad4291e83cf12f75b85, type: 3}

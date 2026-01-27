@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SocketCompatibility : MonoBehaviour
 {
@@ -7,20 +8,19 @@ public class SocketCompatibility : MonoBehaviour
         Top,
         Bottom,
         Left,
-        Right
+        Right,
+        Floor,
+        RampTop,
+        RampBottom
     }
-   
+
     public SocketType socketType;
-    public SocketType compatibleWith;
-    public bool isOccupied;
-   
+    public List<SocketType> compatibleWith = new List<SocketType>();
+
+
     public bool IsCompatible(SocketCompatibility otherSocket)
     {
-        return otherSocket.socketType == compatibleWith && !otherSocket.isOccupied;
-    }
-    
-    public void OccupySocket()
-    {
-        isOccupied = true;
+        return compatibleWith.Contains(otherSocket.socketType);
     }
 }
+    

@@ -35,8 +35,8 @@ Transform:
   m_Children:
   - {fileID: 6843157138641848386}
   - {fileID: 1139977278880707559}
-  - {fileID: 1025721990108196770}
   - {fileID: 6233719038735764300}
+  - {fileID: 1025721990108196770}
   m_Father: {fileID: 7124066493707467878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &973871072126146365
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 99240d1ef9991934d90ca1c3f37502cc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,7 +155,7 @@ Transform:
   m_GameObject: {fileID: 5949550998556092547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.48333335, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -174,8 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   socketType: 0
-  compatibleWith: 1
-  isOccupied: 0
+  compatibleWith: 010000000400000005000000
 --- !u!1 &6193186723121441864
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 6193186723121441864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5121071, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -221,8 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   socketType: 2
-  compatibleWith: 3
-  isOccupied: 0
+  compatibleWith: 03000000
 --- !u!1 &7182697009674127039
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 8760546919303490213}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.51666665, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -318,8 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   socketType: 1
-  compatibleWith: 0
-  isOccupied: 0
+  compatibleWith: 0000000004000000
 --- !u!1 &8934477878803899715
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 8934477878803899715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5009, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -365,5 +362,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   socketType: 3
-  compatibleWith: 2
-  isOccupied: 0
+  compatibleWith: 02000000

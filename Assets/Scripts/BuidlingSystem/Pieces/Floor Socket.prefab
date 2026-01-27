@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 99240d1ef9991934d90ca1c3f37502cc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 2315537544568370641}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5032, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -169,9 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed03448957d43438dae4d412db32a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketType: 0
-  compatibleWith: 0
-  isOccupied: 0
+  socketType: 4
+  compatibleWith: 04000000010000000600000005000000
 --- !u!1 &5677309510106241975
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,9 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed03448957d43438dae4d412db32a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketType: 0
-  compatibleWith: 1
-  isOccupied: 0
+  socketType: 4
+  compatibleWith: 04000000010000000600000005000000
 --- !u!1 &7430478780501320944
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 8447758455208802702}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.507, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -317,9 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed03448957d43438dae4d412db32a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketType: 0
-  compatibleWith: 0
-  isOccupied: 0
+  socketType: 4
+  compatibleWith: 04000000010000000600000005000000
 --- !u!1 &8735835056833765206
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 8735835056833765206}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.505, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -364,6 +361,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed03448957d43438dae4d412db32a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketType: 0
-  compatibleWith: 0
-  isOccupied: 0
+  socketType: 4
+  compatibleWith: 04000000010000000600000005000000

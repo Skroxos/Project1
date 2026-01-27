@@ -44,9 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed03448957d43438dae4d412db32a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketType: 1
-  compatibleWith: 0000000001000000
-  isOccupied: 0
+  socketType: 6
+  compatibleWith: 0500000004000000
 --- !u!1 &6386721238352203254
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 99240d1ef9991934d90ca1c3f37502cc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -198,7 +197,7 @@ Transform:
   m_GameObject: {fileID: 6577118122342968225}
   serializedVersion: 2
   m_LocalRotation: {x: -0.4999996, y: -0, z: -0, w: 0.8660257}
-  m_LocalPosition: {x: -0.602, y: 0.24499786, z: -3.7684312}
+  m_LocalPosition: {x: -0.602, y: 0.24499786, z: -3.95}
   m_LocalScale: {x: 5, y: 5.500001, z: 0.10000002}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -266,6 +265,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed03448957d43438dae4d412db32a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketType: 0
-  compatibleWith: 0100000000000000
-  isOccupied: 0
+  socketType: 5
+  compatibleWith: 0400000006000000

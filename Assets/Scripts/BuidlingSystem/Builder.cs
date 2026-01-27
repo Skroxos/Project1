@@ -8,6 +8,7 @@ public class Builder : MonoBehaviour
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private BuildPieceSO[] availableBuildPieces;
     [SerializeField] private LayerMask buildableLayerMask;
+    [SerializeField] private float gridSnapThreshold;
 
     private bool isBuildingMode;
     private GameObject ghostObject;
@@ -42,12 +43,13 @@ public class Builder : MonoBehaviour
             RotateGhostObject();
             SellectBuildPiece();
             CheckForSocketConnections();
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && CanBuild())
             {
-               //Vector3 buildPosition = worldGrid.GetClosestEdgeWorldPosition(mouseWorldPosition);
                 BuildBuildPieceAt(ghostObject.transform.position);
             }
         }
+
+        Debug.Log(CanBuild());
 
     }
 
@@ -71,7 +73,26 @@ public class Builder : MonoBehaviour
         Gizmos.DrawRay(ray.origin, ray.direction * 100f);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(GetMouseWorldPosition(), 0.5f);
+
+        Gizmos.color = Color.blue;
+        if (ghostObject != null)
+        {
+            
+            Matrix4x4 oldMatrix = Gizmos.matrix;
+            
+            Vector3 boxCenter = GetCenterOfGhostObject();
+            Quaternion boxRotation = ghostObject.transform.rotation;
+            
+            Vector3 boxSize = ghostObject.transform.localScale;
+            
+            Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
+            
+            Gizmos.DrawWireCube(Vector3.zero, boxSize / 5);
+            
+            Gizmos.matrix = oldMatrix;
+        }
     }
+
 
     private void EnterBuildMode()
     {
@@ -79,6 +100,7 @@ public class Builder : MonoBehaviour
         {
             isBuildingMode = true;
             ghostObject = Instantiate(selectedBuildPiece.piecePrefab);
+            ghostSocekts = GetGhostObjectSockets();
             ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
             Color ghostColor = new Color(1f, 1f, 1f, 0.5f);
         }
@@ -126,14 +148,13 @@ public class Builder : MonoBehaviour
             var hitBuildPiece = hitInfo.collider.GetComponentInParent<BuildPiece>().sockets;
             foreach (Transform socketTransform in hitBuildPiece)
             {
-                if (Vector3.Distance(socketTransform.position, hitInfo.point) < 0.5f)
+                if (Vector3.Distance(socketTransform.position, hitInfo.point) < gridSnapThreshold)
                 {
                     currentSocket = socketTransform.GetComponent<SocketCompatibility>();
-                    ghostSocekts = GetGhostObjectSockets();
                     foreach (Transform ghostSocketTransform in ghostSocekts)
                     {
                         ghostSocket = ghostSocketTransform.GetComponent<SocketCompatibility>();
-                        if (currentSocket.IsCompatible(ghostSocket) && !currentSocket.isOccupied)
+                        if (currentSocket.IsCompatible(ghostSocket))
                         {
                             ghostObject.transform.position = socketTransform.position - (ghostSocketTransform.position - ghostObject.transform.position);
                             isSnappedToSocket = true;
@@ -157,7 +178,23 @@ public class Builder : MonoBehaviour
         }
         return socketList;
     }
-
+    
+    private bool CanBuild()
+    {
+        if (ghostObject == null) return false;
+        return !Physics.CheckBox(GetCenterOfGhostObject(), ghostObject.transform.localScale / 5, ghostObject.transform.rotation, buildableLayerMask);
+    }
+    
+    private Vector3 GetCenterOfGhostObject()
+    {
+        Renderer[] renderers = ghostObject.GetComponentsInChildren<Renderer>();
+        Bounds combinedBounds = new Bounds(ghostObject.transform.position, Vector3.zero);
+        foreach (Renderer renderer in renderers)
+        {
+            combinedBounds.Encapsulate(renderer.bounds);
+        }
+        return combinedBounds.center;
+    }
     private void GhostObjectSnapToGrid(Vector3 mouseWorldPosition)
     {
         Vector3 snapPosition = worldGrid.GetClosestEdgeWorldPosition(mouseWorldPosition);
@@ -185,27 +222,6 @@ public class Builder : MonoBehaviour
         }
         
         GameObject newBuilding = Instantiate(selectedBuildPiece.piecePrefab, finalPosition, finalRotation);
-        
-        if (isSnappedToSocket)
-        {
-            if (currentSocket != null)
-            {
-                currentSocket.OccupySocket();
-            }
-            
-            BuildPiece ghostPiece = ghostObject.GetComponent<BuildPiece>();
-            BuildPiece newPiece = newBuilding.GetComponent<BuildPiece>();
-            
-            int socketIndex = ghostPiece.sockets.IndexOf(ghostSocket.transform);
-
-            if (socketIndex != -1 && socketIndex < newPiece.sockets.Count)
-            {
-                SocketCompatibility newBuildingSocket = newPiece.sockets[socketIndex].GetComponent<SocketCompatibility>();
-                newBuildingSocket.OccupySocket();
-            }
-        }
-    
-       
         isSnappedToSocket = false;
     }
 

@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16621811 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8510533893528803561, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
+  m_PrefabInstance: {fileID: 651405164}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &17927394
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2415,12 +2420,37 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7365409943358078456, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
   m_PrefabInstance: {fileID: 651405164}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 16621811}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ac9ef0d8e4215a4f95e778cc6f6a78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!143 &539330263
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16621811}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &549579641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2777,6 +2807,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 254372578766160260, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
+      propertyPath: characterController
+      value: 
+      objectReference: {fileID: 539330263}
+    - target: {fileID: 2960921432333173822, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3761946408472095689, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
       propertyPath: inventoryUI
       value: 
@@ -2960,7 +2998,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8510533893528803561, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 539330263}
   m_SourcePrefab: {fileID: 100100000, guid: 4241328c23aa197458d2cc05c970e7e2, type: 3}
 --- !u!224 &656158800 stripped
 RectTransform:
@@ -6399,6 +6440,7 @@ MonoBehaviour:
   buildableLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  gridSnapThreshold: 1
   width: 1
   height: 1
   cellSize: 0.1

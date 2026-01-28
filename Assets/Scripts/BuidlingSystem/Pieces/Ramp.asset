@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: Ramp
   m_EditorClassIdentifier: 
   pieceName: 
-  piecePrefab: {fileID: 6577118122342968225, guid: 5bb1abd813557b64bb502dec47e22651, type: 3}
-  width: 0
-  height: 0
+  piecePrefab: {fileID: 6577118122342968225, guid: a449028ceab92714894a473fd2d04412, type: 3}

@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: Wall
   m_EditorClassIdentifier: 
   pieceName: 
-  piecePrefab: {fileID: 7182697009674127039, guid: ddf7e0bfd28a979439c5cb2c19174531, type: 3}
-  width: 0
-  height: 0
+  piecePrefab: {fileID: 7182697009674127039, guid: 06656a23b986ea941907d536ec8859ad, type: 3}

@@ -51,8 +51,6 @@ public class Builder : MonoBehaviour
             }
         }
 
-        Debug.Log(CanBuild());
-
     }
 
     private Vector3 GetMouseWorldPosition()

@@ -9,15 +9,17 @@ public class Builder : MonoBehaviour
     [SerializeField] private BuildPieceSO[] availableBuildPieces;
     [SerializeField] private LayerMask buildableLayerMask;
     [SerializeField] private float gridSnapThreshold;
+    [SerializeField] private Camera cam;
 
     private bool isBuildingMode;
     private GameObject ghostObject;
     private Quaternion rotation = Quaternion.identity;
 
     private BuildPieceSO selectedBuildPiece;
-    private List<Transform> ghostSocekts;
+    private List<SocketCompatibility> cachedGhostSockets;
+    private List<SocketCompatibility> cachedTargetSockets;
+    private Collider lastHitCollider;
     private SocketCompatibility currentSocket;
-    private SocketCompatibility ghostSocket;
     private bool isSnappedToSocket;
 
     [SerializeField] private int width = 1;
@@ -55,7 +57,7 @@ public class Builder : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
         {
             return hitInfo.point;
@@ -68,45 +70,51 @@ public class Builder : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (cam == null) return;
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         Gizmos.color = Color.red;
         Gizmos.DrawRay(ray.origin, ray.direction * 100f);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(GetMouseWorldPosition(), 0.5f);
 
-        Gizmos.color = Color.blue;
         if (ghostObject != null)
         {
-            
-            Matrix4x4 oldMatrix = Gizmos.matrix;
-            
             Vector3 boxCenter = GetCenterOfGhostObject();
             Quaternion boxRotation = ghostObject.transform.rotation;
+  
+            Vector3 drawSize = ghostObject.transform.localScale * 0.9f;
             
-            Vector3 boxSize = ghostObject.transform.localScale;
+            bool canBuild = CanBuild();
+            Gizmos.color = canBuild ? Color.green : Color.red;
             
+            Matrix4x4 oldMatrix = Gizmos.matrix;
             Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
             
-            Gizmos.DrawWireCube(Vector3.zero, boxSize / 5);
+            Gizmos.DrawWireCube(Vector3.zero, drawSize);
+            
+            Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, 0.25f);
+            Gizmos.DrawCube(Vector3.zero, drawSize);
             
             Gizmos.matrix = oldMatrix;
         }
     }
 
 
+
     private void EnterBuildMode()
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
+            if (isBuildingMode)
+            {
+                ExitBuildMode();
+                return;
+            }
             isBuildingMode = true;
             ghostObject = Instantiate(selectedBuildPiece.piecePrefab);
-            ghostSocekts = GetGhostObjectSockets();
+            GetGhostObjectSockets(); 
             ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
-            Color ghostColor = new Color(1f, 1f, 1f, 0.5f);
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ExitBuildMode();
         }
     }
 
@@ -133,7 +141,7 @@ public class Builder : MonoBehaviour
                 selectedBuildPiece = availableBuildPieces[i];
                 Destroy(ghostObject);
                 ghostObject = Instantiate(selectedBuildPiece.piecePrefab);
-                ghostSocekts = GetGhostObjectSockets();
+                GetGhostObjectSockets();
                 ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
             }
         }
@@ -142,21 +150,27 @@ public class Builder : MonoBehaviour
 
     private void CheckForSocketConnections()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, buildableLayerMask))
         {
-            var hitBuildPiece = hitInfo.collider.GetComponentInParent<BuildPiece>().sockets;
-            foreach (Transform socketTransform in hitBuildPiece)
+            if (hitInfo.collider != lastHitCollider)
             {
-                if (Vector3.Distance(socketTransform.position, hitInfo.point) < gridSnapThreshold)
+                lastHitCollider = hitInfo.collider;
+                cachedTargetSockets = hitInfo.collider.GetComponentInParent<BuildPiece>().mySockets;
+            }
+
+            foreach (SocketCompatibility sockets in cachedTargetSockets)
+            {
+                float distanceSquared = (sockets.transform.position - hitInfo.point).sqrMagnitude;
+                float thresholdSquared = gridSnapThreshold * gridSnapThreshold;
+                if (distanceSquared < thresholdSquared)
                 {
-                    currentSocket = socketTransform.GetComponent<SocketCompatibility>();
-                    foreach (Transform ghostSocketTransform in ghostSocekts)
+                    currentSocket = sockets;
+                    foreach (var myGhostSocket in cachedGhostSockets)
                     {
-                        ghostSocket = ghostSocketTransform.GetComponent<SocketCompatibility>();
-                        if (currentSocket.IsCompatible(ghostSocket))
+                        if (currentSocket.IsCompatible(myGhostSocket))
                         {
-                            ghostObject.transform.position = socketTransform.position - (ghostSocketTransform.position - ghostObject.transform.position);
+                            ghostObject.transform.position = sockets.transform.position - (myGhostSocket.transform.position - ghostObject.transform.position);
                             isSnappedToSocket = true;
                             return;
                         }
@@ -165,24 +179,32 @@ public class Builder : MonoBehaviour
                 isSnappedToSocket = false;
             }
         }
+        else
+        {
+            lastHitCollider = null;
+        }
     }
-
+ 
    
 
-    private List<Transform> GetGhostObjectSockets()
+    private void GetGhostObjectSockets()
     {
-        List<Transform> socketList = new List<Transform>();
-        foreach (Transform socketTransform in ghostObject.GetComponent<BuildPiece>().sockets)
+        cachedGhostSockets = new List<SocketCompatibility>();
+        SocketCompatibility[] sockets = ghostObject.GetComponentsInChildren<SocketCompatibility>();
+        foreach (var socket in sockets)
         {
-            socketList.Add(socketTransform);
+            cachedGhostSockets.Add(socket);
         }
-        return socketList;
     }
+    
+    
     
     private bool CanBuild()
     {
         if (ghostObject == null) return false;
-        return !Physics.CheckBox(GetCenterOfGhostObject(), ghostObject.transform.localScale / 5, ghostObject.transform.rotation, buildableLayerMask);
+        Bounds ghostBounds = new Bounds(GetCenterOfGhostObject(), ghostObject.transform.localScale);
+        Vector3 detectionBoxSize = ghostBounds.extents * 0.9f;
+        return !Physics.CheckBox(ghostBounds.center, detectionBoxSize, ghostObject.transform.rotation, buildableLayerMask);
     }
     
     private Vector3 GetCenterOfGhostObject()

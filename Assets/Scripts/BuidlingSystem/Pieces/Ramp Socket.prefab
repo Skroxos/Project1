@@ -221,6 +221,9 @@ MonoBehaviour:
   sockets:
   - {fileID: 4251048297982133401}
   - {fileID: 4979294728074690407}
+  mySockets:
+  - {fileID: 4937153453272065912}
+  - {fileID: 2105420430739611955}
 --- !u!1 &7060215344300876768
 GameObject:
   m_ObjectHideFlags: 0

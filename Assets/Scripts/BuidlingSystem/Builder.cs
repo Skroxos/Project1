@@ -1,27 +1,25 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Builder : MonoBehaviour
 {
-    public WorldGrid worldGrid;
+    private WorldGrid _worldGrid;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private BuildPieceSO[] availableBuildPieces;
     [SerializeField] private LayerMask buildableLayerMask;
     [SerializeField] private float gridSnapThreshold;
     [SerializeField] private Camera cam;
 
-    private bool isBuildingMode;
-    private GameObject ghostObject;
-    private Quaternion rotation = Quaternion.identity;
+    private bool _isBuildingMode;
+    private GameObject _ghostObject;
+    private Quaternion _rotation = Quaternion.identity;
 
-    private BuildPieceSO selectedBuildPiece;
-    private List<SocketCompatibility> cachedGhostSockets;
-    private List<SocketCompatibility> cachedTargetSockets;
-    private Collider lastHitCollider;
-    private SocketCompatibility currentSocket;
-    private bool isSnappedToSocket;
+    private BuildPieceSO _selectedBuildPiece;
+    private List<SocketCompatibility> _cachedGhostSockets;
+    private List<SocketCompatibility> _cachedTargetSockets;
+    private Collider _lastHitCollider;
+    private SocketCompatibility _currentSocket;
+    private bool _isSnappedToSocket;
 
     [SerializeField] private int width = 1;
     [SerializeField] private int height = 1;
@@ -31,15 +29,15 @@ public class Builder : MonoBehaviour
     {
         Vector3 originPosition = new Vector3(width * cellSize / 2 * -1, 0, height * cellSize / 2 * -1);
         Cursor.lockState = CursorLockMode.Locked;
-        worldGrid = new WorldGrid(width, height, cellSize, originPosition);
+        _worldGrid = new WorldGrid(width, height, cellSize, originPosition);
 
-        selectedBuildPiece = availableBuildPieces[0];
+        _selectedBuildPiece = availableBuildPieces[0];
     }
 
     private void Update()
     {
         EnterBuildMode();
-        if (isBuildingMode)
+        if (_isBuildingMode)
         {
             Vector3 mouseWorldPosition = GetMouseWorldPosition();
             GhostObjectSnapToGrid(mouseWorldPosition);
@@ -48,7 +46,7 @@ public class Builder : MonoBehaviour
             CheckForSocketConnections();
             if (Input.GetMouseButtonDown(0) && CanBuild())
             {
-                BuildBuildPieceAt(ghostObject.transform.position);
+                BuildBuildPieceAt(_ghostObject.transform.position);
             }
         }
 
@@ -77,12 +75,12 @@ public class Builder : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(GetMouseWorldPosition(), 0.5f);
 
-        if (ghostObject != null)
+        if (_ghostObject != null)
         {
             Vector3 boxCenter = GetCenterOfGhostObject();
-            Quaternion boxRotation = ghostObject.transform.rotation;
+            Quaternion boxRotation = _ghostObject.transform.rotation;
   
-            Vector3 drawSize = ghostObject.transform.localScale * 0.9f;
+            Vector3 drawSize = _ghostObject.transform.localScale * 0.9f;
             
             bool canBuild = CanBuild();
             Gizmos.color = canBuild ? Color.green : Color.red;
@@ -105,26 +103,26 @@ public class Builder : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            if (isBuildingMode)
+            if (_isBuildingMode)
             {
                 ExitBuildMode();
                 return;
             }
-            isBuildingMode = true;
-            ghostObject = ObjectPooler.Instance.GetPooledObject(selectedBuildPiece.piecePrefab);
-            ghostObject.SetActive(true);
+            _isBuildingMode = true;
+            _ghostObject = ObjectPooler.Instance.GetPooledObject(_selectedBuildPiece.piecePrefab);
+            _ghostObject.SetActive(true);
             GetGhostObjectSockets(); 
-            ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
+            _ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
         }
     }
 
     private void ExitBuildMode()
     {
-        isBuildingMode = false;
-        if (ghostObject != null)
+        _isBuildingMode = false;
+        if (_ghostObject != null)
         {
-            ghostObject.SetActive(false);
-            ghostObject = null;
+            _ghostObject.SetActive(false);
+            _ghostObject = null;
         }
     }
 
@@ -132,7 +130,7 @@ public class Builder : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            rotation *= Quaternion.Euler(0, 90, 0);
+            _rotation *= Quaternion.Euler(0, 90, 0);
         }
     }
 
@@ -142,17 +140,17 @@ public class Builder : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                selectedBuildPiece = availableBuildPieces[i];
-                if (ghostObject != null)
+                _selectedBuildPiece = availableBuildPieces[i];
+                if (_ghostObject != null)
                 {
-                    ghostObject.SetActive(false);
+                    _ghostObject.SetActive(false);
                 }
-                ghostObject = ObjectPooler.Instance.GetPooledObject(selectedBuildPiece.piecePrefab);
-                if (ghostObject != null)
+                _ghostObject = ObjectPooler.Instance.GetPooledObject(_selectedBuildPiece.piecePrefab);
+                if (_ghostObject != null)
                 {
-                    ghostObject.SetActive(true);
+                    _ghostObject.SetActive(true);
                     GetGhostObjectSockets();
-                    ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
+                    _ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
                 }
             }
         }
@@ -164,35 +162,35 @@ public class Builder : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, buildableLayerMask))
         {
-            if (hitInfo.collider != lastHitCollider)
+            if (hitInfo.collider != _lastHitCollider)
             {
-                lastHitCollider = hitInfo.collider;
-                cachedTargetSockets = hitInfo.collider.GetComponentInParent<BuildPiece>().mySockets;
+                _lastHitCollider = hitInfo.collider;
+                _cachedTargetSockets = hitInfo.collider.GetComponentInParent<BuildPiece>().mySockets;
             }
 
-            foreach (SocketCompatibility sockets in cachedTargetSockets)
+            foreach (SocketCompatibility sockets in _cachedTargetSockets)
             {
                 float distanceSquared = (sockets.transform.position - hitInfo.point).sqrMagnitude;
                 float thresholdSquared = gridSnapThreshold * gridSnapThreshold;
                 if (distanceSquared < thresholdSquared)
                 {
-                    currentSocket = sockets;
-                    foreach (var myGhostSocket in cachedGhostSockets)
+                    _currentSocket = sockets;
+                    foreach (var myGhostSocket in _cachedGhostSockets)
                     {
-                        if (currentSocket.IsCompatible(myGhostSocket))
+                        if (_currentSocket.IsCompatible(myGhostSocket))
                         {
-                            ghostObject.transform.position = sockets.transform.position - (myGhostSocket.transform.position - ghostObject.transform.position);
-                            isSnappedToSocket = true;
+                            _ghostObject.transform.position = sockets.transform.position - (myGhostSocket.transform.position - _ghostObject.transform.position);
+                            _isSnappedToSocket = true;
                             return;
                         }
                     }
                 }
-                isSnappedToSocket = false;
+                _isSnappedToSocket = false;
             }
         }
         else
         {
-            lastHitCollider = null;
+            _lastHitCollider = null;
         }
     }
  
@@ -200,11 +198,11 @@ public class Builder : MonoBehaviour
 
     private void GetGhostObjectSockets()
     {
-        cachedGhostSockets = new List<SocketCompatibility>();
-        SocketCompatibility[] sockets = ghostObject.GetComponentsInChildren<SocketCompatibility>();
+        _cachedGhostSockets = new List<SocketCompatibility>();
+        SocketCompatibility[] sockets = _ghostObject.GetComponentsInChildren<SocketCompatibility>();
         foreach (var socket in sockets)
         {
-            cachedGhostSockets.Add(socket);
+            _cachedGhostSockets.Add(socket);
         }
     }
     
@@ -212,16 +210,16 @@ public class Builder : MonoBehaviour
     
     private bool CanBuild()
     {
-        if (ghostObject == null) return false;
-        Bounds ghostBounds = new Bounds(GetCenterOfGhostObject(), ghostObject.transform.localScale);
+        if (_ghostObject == null) return false;
+        Bounds ghostBounds = new Bounds(GetCenterOfGhostObject(), _ghostObject.transform.localScale);
         Vector3 detectionBoxSize = ghostBounds.extents * 0.9f;
-        return !Physics.CheckBox(ghostBounds.center, detectionBoxSize, ghostObject.transform.rotation, buildableLayerMask);
+        return !Physics.CheckBox(ghostBounds.center, detectionBoxSize, _ghostObject.transform.rotation, buildableLayerMask);
     }
     
     private Vector3 GetCenterOfGhostObject()
     {
-        Renderer[] renderers = ghostObject.GetComponentsInChildren<Renderer>();
-        Bounds combinedBounds = new Bounds(ghostObject.transform.position, Vector3.zero);
+        Renderer[] renderers = _ghostObject.GetComponentsInChildren<Renderer>();
+        Bounds combinedBounds = new Bounds(_ghostObject.transform.position, Vector3.zero);
         foreach (Renderer renderer in renderers)
         {
             combinedBounds.Encapsulate(renderer.bounds);
@@ -230,11 +228,11 @@ public class Builder : MonoBehaviour
     }
     private void GhostObjectSnapToGrid(Vector3 mouseWorldPosition)
     {
-        Vector3 snapPosition = worldGrid.GetClosestEdgeWorldPosition(mouseWorldPosition);
-        ghostObject.transform.position = snapPosition;
+        Vector3 snapPosition = _worldGrid.GetClosestEdgeWorldPosition(mouseWorldPosition);
+        _ghostObject.transform.position = snapPosition;
 
-        Quaternion basePrefabRotation = selectedBuildPiece.piecePrefab.transform.rotation;
-        ghostObject.transform.rotation = rotation * basePrefabRotation;
+        Quaternion basePrefabRotation = _selectedBuildPiece.piecePrefab.transform.rotation;
+        _ghostObject.transform.rotation = _rotation * basePrefabRotation;
     }
 
     private void BuildBuildPieceAt(Vector3 worldPosition)
@@ -242,26 +240,26 @@ public class Builder : MonoBehaviour
         Vector3 finalPosition;
         Quaternion finalRotation;
         
-        if (isSnappedToSocket)
+        if (_isSnappedToSocket)
         {
-            finalPosition = ghostObject.transform.position;
-            finalRotation = ghostObject.transform.rotation;
+            finalPosition = _ghostObject.transform.position;
+            finalRotation = _ghostObject.transform.rotation;
         }
         else
         {
-            finalPosition = worldGrid.GetClosestEdgeWorldPosition(worldPosition);
-            Quaternion basePrefabRotation = selectedBuildPiece.piecePrefab.transform.rotation;
-            finalRotation = rotation * basePrefabRotation;
+            finalPosition = _worldGrid.GetClosestEdgeWorldPosition(worldPosition);
+            Quaternion basePrefabRotation = _selectedBuildPiece.piecePrefab.transform.rotation;
+            finalRotation = _rotation * basePrefabRotation;
         }
         
-        GameObject newBuilding = ObjectPooler.Instance.GetPooledObject(selectedBuildPiece.piecePrefab);
+        GameObject newBuilding = ObjectPooler.Instance.GetPooledObject(_selectedBuildPiece.piecePrefab);
         if (newBuilding != null)
         {
             newBuilding.transform.position = finalPosition;
             newBuilding.transform.rotation = finalRotation;
             newBuilding.SetActive(true);
         }
-        isSnappedToSocket = false;
+        _isSnappedToSocket = false;
     }
 
     

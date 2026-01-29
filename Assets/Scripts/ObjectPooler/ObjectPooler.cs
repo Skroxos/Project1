@@ -6,7 +6,7 @@ public class ObjectPooler : MonoBehaviour
     public static ObjectPooler Instance;
     public List<GameObject> objectsToPool;
     public int amountToPool;
-    private Dictionary<string, List<GameObject>> poolDictionary;
+    private Dictionary<string, List<GameObject>> _poolDictionary;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class ObjectPooler : MonoBehaviour
 
     public void InitializePool()
     {
-        poolDictionary = new Dictionary<string, List<GameObject>>();
+        _poolDictionary = new Dictionary<string, List<GameObject>>();
 
         foreach (GameObject obj in objectsToPool)
         {
@@ -40,25 +40,25 @@ public class ObjectPooler : MonoBehaviour
                 objectPool.Add(pooledObj);
             }
 
-            poolDictionary.Add(obj.name, objectPool);
+            _poolDictionary.Add(obj.name, objectPool);
         }
     }
 
     public GameObject GetPooledObject(GameObject prefab)
     {
-        if (poolDictionary != null && poolDictionary.ContainsKey(prefab.name))
+        if (_poolDictionary != null && _poolDictionary.ContainsKey(prefab.name))
         {
-            foreach (GameObject obj in poolDictionary[prefab.name])
+            foreach (GameObject obj in _poolDictionary[prefab.name])
             {
                 if (!obj.activeInHierarchy)
                 {
                     return obj;
                 }
-                if (obj == poolDictionary[prefab.name][poolDictionary[prefab.name].Count - 1])
+                if (obj == _poolDictionary[prefab.name][_poolDictionary[prefab.name].Count - 1])
                 {
                     GameObject newObj = Instantiate(prefab);
                     newObj.SetActive(false);
-                    poolDictionary[prefab.name].Add(newObj);
+                    _poolDictionary[prefab.name].Add(newObj);
                     return newObj;
                 }
             }

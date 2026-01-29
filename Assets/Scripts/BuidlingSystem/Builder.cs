@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Builder : MonoBehaviour
 {
@@ -110,7 +111,8 @@ public class Builder : MonoBehaviour
                 return;
             }
             isBuildingMode = true;
-            ghostObject = Instantiate(selectedBuildPiece.piecePrefab);
+            ghostObject = ObjectPooler.Instance.GetPooledObject(selectedBuildPiece.piecePrefab);
+            ghostObject.SetActive(true);
             GetGhostObjectSockets(); 
             ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
         }
@@ -119,7 +121,11 @@ public class Builder : MonoBehaviour
     private void ExitBuildMode()
     {
         isBuildingMode = false;
-        Destroy(ghostObject);
+        if (ghostObject != null)
+        {
+            ghostObject.SetActive(false);
+            ghostObject = null;
+        }
     }
 
     private void RotateGhostObject()
@@ -137,10 +143,17 @@ public class Builder : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
                 selectedBuildPiece = availableBuildPieces[i];
-                Destroy(ghostObject);
-                ghostObject = Instantiate(selectedBuildPiece.piecePrefab);
-                GetGhostObjectSockets();
-                ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
+                if (ghostObject != null)
+                {
+                    ghostObject.SetActive(false);
+                }
+                ghostObject = ObjectPooler.Instance.GetPooledObject(selectedBuildPiece.piecePrefab);
+                if (ghostObject != null)
+                {
+                    ghostObject.SetActive(true);
+                    GetGhostObjectSockets();
+                    ghostObject.gameObject.GetComponentInChildren<Collider>().enabled = false;
+                }
             }
         }
     }
@@ -241,7 +254,13 @@ public class Builder : MonoBehaviour
             finalRotation = rotation * basePrefabRotation;
         }
         
-        GameObject newBuilding = Instantiate(selectedBuildPiece.piecePrefab, finalPosition, finalRotation);
+        GameObject newBuilding = ObjectPooler.Instance.GetPooledObject(selectedBuildPiece.piecePrefab);
+        if (newBuilding != null)
+        {
+            newBuilding.transform.position = finalPosition;
+            newBuilding.transform.rotation = finalRotation;
+            newBuilding.SetActive(true);
+        }
         isSnappedToSocket = false;
     }
 

@@ -42,7 +42,7 @@ public class Builder : MonoBehaviour
             Vector3 mouseWorldPosition = GetMouseWorldPosition();
             GhostObjectSnapToGrid(mouseWorldPosition);
             RotateGhostObject();
-            SellectBuildPiece();
+            SelectBuildPiece();
             CheckForSocketConnections();
             if (Input.GetMouseButtonDown(0) && CanBuild())
             {
@@ -134,7 +134,7 @@ public class Builder : MonoBehaviour
         }
     }
 
-    private void SellectBuildPiece()
+    private void SelectBuildPiece()
     {
         for (int i = 0; i < availableBuildPieces.Length; i++)
         {
